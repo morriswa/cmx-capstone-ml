@@ -9,3 +9,6 @@ lib
 share
 pyvenv.cfg
 Scripts
+
+# setuptools
+**.egg-info
