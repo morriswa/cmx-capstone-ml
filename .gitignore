@@ -12,3 +12,5 @@ Scripts
 
 # setuptools
 **.egg-info
+dist
+build
