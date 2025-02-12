@@ -22,10 +22,8 @@ def run_predict_app_cli(args):
 
 
 def run_scrape_app_cli():
-    # TODO call ur function here
-    # from src.scrape.filename import function_name
-    # function_name()
-    pass
+    from src.cmx_capstone_ml_morriswa.scrape import scrape
+    scrape()
 
 
 def run_train_app_cli():
