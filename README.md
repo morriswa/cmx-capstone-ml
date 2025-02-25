@@ -4,6 +4,7 @@
 - William Morris [morriswa] morris.william@ku.edu
 - Kevin Rivers [Kabuto1357] kevin.rivers14832@ku.edu
 - Makenna Loewenherz [makennabrynn] makennaloewenherz@gmail.com
+- Timothy Holmes [Timoholmes] t338h273@ku.edu
 
 
 ## Project Setup Guide
