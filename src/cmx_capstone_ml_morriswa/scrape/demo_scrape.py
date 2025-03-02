@@ -51,7 +51,31 @@ data_dictionary = {'Department': [],
         }
 
 # example of a list of sites to scrape
-example_list = ["https://admissions.ku.edu", "https://admissions.ku.edu/afford", "https://admissions.ku.edu/success"]
+example_list = ["https://accessibility.ku.edu",
+"https://affordability.ku.edu/costs",
+"https://canvas.ku.edu",
+"https://cms.ku.edu",
+"https://directory.ku.edu/",
+"https://employment.ku.edu/",
+"https://financialaid.ku.edu/consumer-information",
+"https://humanresources.ku.edu/",
+"https://iss.ku.edu/",
+"https://ku.edu",
+"https://kupolice.ku.edu/",
+"https://lib.ku.edu/",
+"https://my.ku.edu",
+"https://my.ku.edu/JayhawkGpsRedirect",
+"https://news.ku.edu/",
+"https://opsmaps.ku.edu/",
+"https://otp.ku.edu/",
+"https://policy.ku.edu/provost/privacy-policy",
+"https://publicaffairs.ku.edu/freedom-of-expression",
+"https://registrar.ku.edu/",
+"https://registrar.ku.edu/ku-academic-calendar",
+"https://registrar.ku.edu/transcripts",
+"https://sa.ku.edu",
+"https://technology.ku.edu/"]
+
 for site in example_list: 
     scrape_function(site, data_dictionary)
 
