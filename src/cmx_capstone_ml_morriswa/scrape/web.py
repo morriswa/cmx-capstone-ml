@@ -5,6 +5,10 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
+def scrape_urls(all_urls, output_file_path) -> None:
+    pass
+
 # main function that takes parameter of site to be scrapped
 def scrape_function(site_url, dictionary):
 
@@ -54,13 +58,13 @@ def scrape_function(site_url, dictionary):
     dictionary['Text'].append(cleaned_text)
     dictionary['URL'].append(site_url)
 
-# save all collected data in a dictionary, which will be used to make the dataframe
-data_dictionary = {'Department': [],
-        'Page Title': [], # I added this because H1s are not always descriptive
-        'h1 Title': [],
-        'Text': [],
-        'URL': []
-        }
+# # save all collected data in a dictionary, which will be used to make the dataframe
+# data_dictionary = {'Department': [],
+#         'Page Title': [], # I added this because H1s are not always descriptive
+#         'h1 Title': [],
+#         'Text': [],
+#         'URL': []
+#         }
 
 # # example of a list of sites to scrape
 # example_list = ["https://accessibility.ku.edu",
@@ -87,13 +91,10 @@ data_dictionary = {'Department': [],
 # "https://registrar.ku.edu/transcripts",
 # "https://sa.ku.edu",
 # "https://technology.ku.edu/"]
-
-for site in example_list: 
-    scrape_function(site, data_dictionary)
-
-# create a pandas dataframe to store information
-example_dataframe = pd.DataFrame(data_dictionary)
-print(example_dataframe)
-# saving the dataframe
-example_dataframe.to_csv('ku-information.csv')
-
+#
+# for site in example_list:
+#     scrape_function(site, data_dictionary)
+#
+# # create a pandas dataframe to store information
+# example_dataframe = pd.DataFrame(data_dictionary)
+# print(example_dataframe)
