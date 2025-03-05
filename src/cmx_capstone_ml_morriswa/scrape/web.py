@@ -5,6 +5,10 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
+def scrape_urls(all_urls, output_file_path) -> None:
+    pass
+
 # main function that takes parameter of site to be scrapped
 def scrape_function(site_url, dictionary):
 
@@ -42,43 +46,43 @@ def scrape_function(site_url, dictionary):
     dictionary['Text'].append(cleaned_text)
     dictionary['URL'].append(site_url)
 
-# save all collected data in a dictionary, which will be used to make the dataframe
-data_dictionary = {'Department': [],
-        'Page Title': [], # I added this because H1s are not always descriptive
-        'h1 Title': [],
-        'Text': [],
-        'URL': []
-        }
+# # save all collected data in a dictionary, which will be used to make the dataframe
+# data_dictionary = {'Department': [],
+#         'Page Title': [], # I added this because H1s are not always descriptive
+#         'h1 Title': [],
+#         'Text': [],
+#         'URL': []
+#         }
 
-# example of a list of sites to scrape
-example_list = ["https://accessibility.ku.edu",
-"https://affordability.ku.edu/costs",
-"https://canvas.ku.edu",
-"https://cms.ku.edu",
-"https://directory.ku.edu/",
-"https://employment.ku.edu/",
-"https://financialaid.ku.edu/consumer-information",
-"https://humanresources.ku.edu/",
-"https://iss.ku.edu/",
-"https://ku.edu",
-"https://kupolice.ku.edu/",
-"https://lib.ku.edu/",
-"https://my.ku.edu",
-"https://my.ku.edu/JayhawkGpsRedirect",
-"https://news.ku.edu/",
-"https://opsmaps.ku.edu/",
-"https://otp.ku.edu/",
-"https://policy.ku.edu/provost/privacy-policy",
-"https://publicaffairs.ku.edu/freedom-of-expression",
-"https://registrar.ku.edu/",
-"https://registrar.ku.edu/ku-academic-calendar",
-"https://registrar.ku.edu/transcripts",
-"https://sa.ku.edu",
-"https://technology.ku.edu/"]
-
-for site in example_list: 
-    scrape_function(site, data_dictionary)
-
-# create a pandas dataframe to store information
-example_dataframe = pd.DataFrame(data_dictionary)
-print(example_dataframe)
+# # example of a list of sites to scrape
+# example_list = ["https://accessibility.ku.edu",
+# "https://affordability.ku.edu/costs",
+# "https://canvas.ku.edu",
+# "https://cms.ku.edu",
+# "https://directory.ku.edu/",
+# "https://employment.ku.edu/",
+# "https://financialaid.ku.edu/consumer-information",
+# "https://humanresources.ku.edu/",
+# "https://iss.ku.edu/",
+# "https://ku.edu",
+# "https://kupolice.ku.edu/",
+# "https://lib.ku.edu/",
+# "https://my.ku.edu",
+# "https://my.ku.edu/JayhawkGpsRedirect",
+# "https://news.ku.edu/",
+# "https://opsmaps.ku.edu/",
+# "https://otp.ku.edu/",
+# "https://policy.ku.edu/provost/privacy-policy",
+# "https://publicaffairs.ku.edu/freedom-of-expression",
+# "https://registrar.ku.edu/",
+# "https://registrar.ku.edu/ku-academic-calendar",
+# "https://registrar.ku.edu/transcripts",
+# "https://sa.ku.edu",
+# "https://technology.ku.edu/"]
+#
+# for site in example_list:
+#     scrape_function(site, data_dictionary)
+#
+# # create a pandas dataframe to store information
+# example_dataframe = pd.DataFrame(data_dictionary)
+# print(example_dataframe)
