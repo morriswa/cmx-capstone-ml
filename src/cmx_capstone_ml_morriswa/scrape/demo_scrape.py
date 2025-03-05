@@ -24,17 +24,29 @@ def scrape_function(site_url, dictionary):
 
     # h1s
     headings = soup_object.find_all('h1') # saves all h1s to a list
-    cleaned_h1 = [heading.get_text().strip() for heading in headings]
+    if headings == []:
+        cleaned_h1 = ["N/A"]
+    else:
+        cleaned_h1 = [heading.get_text().strip() for heading in headings]
+    # print(cleaned_h1)
 
     # site titles
     site_titles = soup_object.find_all('title') # saves all title tags to a list (the name that appears on a browser tab)
-    cleaned_titles = [title.get_text().strip() for title in site_titles]
-    first_title = cleaned_titles[0]
-    first_part = first_title.split(" | ")[0]
-    
+    if site_titles == []:
+        first_part = "N/A"
+    else:
+        cleaned_titles = [title.get_text().strip() for title in site_titles]
+        first_title = cleaned_titles[0]
+        first_part = first_title.split(" | ")[0]
+    # print(first_part)
+
     # site department
     site_department = soup_object.find_all(class_="site-title-group__site-title") # saves all instances of the class site-title-group__site-title, which is the blue text at the top left of every ku site
-    cleaned_department = [dep.get_text().strip() for dep in site_department]
+    if site_department == []:
+        cleaned_department = ["N/A"]
+    else:
+        cleaned_department = [dep.get_text().strip() for dep in site_department]
+    # print(cleaned_department)
 
     dictionary['Department'].append(cleaned_department[0])
     dictionary['Page Title'].append(first_part)
@@ -50,31 +62,31 @@ data_dictionary = {'Department': [],
         'URL': []
         }
 
-# example of a list of sites to scrape
-example_list = ["https://accessibility.ku.edu",
-"https://affordability.ku.edu/costs",
-"https://canvas.ku.edu",
-"https://cms.ku.edu",
-"https://directory.ku.edu/",
-"https://employment.ku.edu/",
-"https://financialaid.ku.edu/consumer-information",
-"https://humanresources.ku.edu/",
-"https://iss.ku.edu/",
-"https://ku.edu",
-"https://kupolice.ku.edu/",
-"https://lib.ku.edu/",
-"https://my.ku.edu",
-"https://my.ku.edu/JayhawkGpsRedirect",
-"https://news.ku.edu/",
-"https://opsmaps.ku.edu/",
-"https://otp.ku.edu/",
-"https://policy.ku.edu/provost/privacy-policy",
-"https://publicaffairs.ku.edu/freedom-of-expression",
-"https://registrar.ku.edu/",
-"https://registrar.ku.edu/ku-academic-calendar",
-"https://registrar.ku.edu/transcripts",
-"https://sa.ku.edu",
-"https://technology.ku.edu/"]
+# # example of a list of sites to scrape
+# example_list = ["https://accessibility.ku.edu",
+# "https://affordability.ku.edu/costs",
+# "https://canvas.ku.edu",
+# "https://cms.ku.edu",
+# "https://directory.ku.edu/",
+# "https://employment.ku.edu/",
+# "https://financialaid.ku.edu/consumer-information",
+# "https://humanresources.ku.edu/",
+# "https://iss.ku.edu/",
+# "https://ku.edu",
+# "https://kupolice.ku.edu/",
+# "https://lib.ku.edu/",
+# "https://my.ku.edu",
+# "https://my.ku.edu/JayhawkGpsRedirect",
+# "https://news.ku.edu/",
+# "https://opsmaps.ku.edu/",
+# "https://otp.ku.edu/",
+# "https://policy.ku.edu/provost/privacy-policy",
+# "https://publicaffairs.ku.edu/freedom-of-expression",
+# "https://registrar.ku.edu/",
+# "https://registrar.ku.edu/ku-academic-calendar",
+# "https://registrar.ku.edu/transcripts",
+# "https://sa.ku.edu",
+# "https://technology.ku.edu/"]
 
 for site in example_list: 
     scrape_function(site, data_dictionary)
@@ -82,3 +94,6 @@ for site in example_list:
 # create a pandas dataframe to store information
 example_dataframe = pd.DataFrame(data_dictionary)
 print(example_dataframe)
+# saving the dataframe
+example_dataframe.to_csv('ku-information.csv')
+
