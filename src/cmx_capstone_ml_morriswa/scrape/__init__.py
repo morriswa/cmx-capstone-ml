@@ -1,6 +1,4 @@
 
-from .demo_scrape import scrape_admissions
-
-
-def scrape():
-    scrape_admissions()
+def scrape(output_file_path):
+    print(output_file_path)
+    pass
