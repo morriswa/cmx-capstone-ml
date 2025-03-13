@@ -5,7 +5,9 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+# function that scrapes all the urls from a list of sites KR
 def scrape_urls(all_urls, csv_filename) -> None:
+    # dictionary to store all the data
     data_dictionary = {'Department': [],
         'Page Title': [], # I added this because H1s are not always descriptive
         'h1 Title': [],
