@@ -44,7 +44,7 @@ def get_all_ku_sites_with_depth_priority(start_url, visited=None, depth=0, max_d
     except requests.exceptions.RequestException as e:
         print(f"Error fetching {start_url}: {e}")
 
-    return sorted(list(all_ku_links))
+    return list(all_ku_links)
 
 
 
