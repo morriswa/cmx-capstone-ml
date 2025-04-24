@@ -2,47 +2,65 @@
 
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
-import time
+from urllib.parse import urljoin, urlparse
 
-def get_all_ku_sites_with_depth_priority(start_url, visited=None, depth=0, max_depth=3, all_ku_links=None):
-    if visited is None:
-        visited = set()
-    if all_ku_links is None:
-        all_ku_links = set()
-    if start_url in visited or depth > max_depth:
-        return all_ku_links
+def get_all_links(url):
+    links = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-    visited.add(start_url)
+    for link in soup.find_all("a"):
+        href = link.get("href")
+        if href and not any(social in href for social in ["twitter", "facebook", "instagram", "youtube", "linkedin"]):
+            links.append(href)
 
-    try:
-        response = requests.get(start_url, timeout=10)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        all_links_on_page = soup.find_all('a')
+    return list(set(links))
 
-        # First, extract and add all unique ku.edu links from the current page
-        for link in all_links_on_page:
-            href = link.get('href')
-            if href and not href.startswith(("mailto:", "tel:")):
-                full_url = urljoin(start_url, href)
-                if "ku.edu" in full_url:
-                    all_ku_links.add(full_url)
 
-        # Then, recursively visit other ku.edu links found on this page
-        for link in all_links_on_page:
-            href = link.get('href')
-            if href and not href.startswith(("mailto:", "tel:")):
-                full_url = urljoin(start_url, href)
-                if "ku.edu" in full_url and full_url not in visited:
-                    get_all_ku_sites_with_depth_priority(full_url, visited, depth + 1, max_depth, all_ku_links)
 
-        time.sleep(0.1) # To avoid overwhelming the server with requests
+# import requests
+# from bs4 import BeautifulSoup
+# from urllib.parse import urljoin
+# import time
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching {start_url}: {e}")
+# def get_all_ku_sites_with_depth_priority(start_url, visited=None, depth=0, max_depth=3, all_ku_links=None):
+#     if visited is None:
+#         visited = set()
+#     if all_ku_links is None:
+#         all_ku_links = set()
+#     if start_url in visited or depth > max_depth:
+#         return all_ku_links
 
-    return list(all_ku_links)
+#     visited.add(start_url)
+
+#     try:
+#         response = requests.get(start_url, timeout=10)
+#         response.raise_for_status()
+#         soup = BeautifulSoup(response.text, 'html.parser')
+#         all_links_on_page = soup.find_all('a')
+
+#         # First, extract and add all unique ku.edu links from the current page
+#         for link in all_links_on_page:
+#             href = link.get('href')
+#             if href and not href.startswith(("mailto:", "tel:")):
+#                 full_url = urljoin(start_url, href)
+#                 if "ku.edu" in full_url:
+#                     all_ku_links.add(full_url)
+
+#         # Then, recursively visit other ku.edu links found on this page
+#         for link in all_links_on_page:
+#             href = link.get('href')
+#             if href and not href.startswith(("mailto:", "tel:")):
+#                 full_url = urljoin(start_url, href)
+#                 if "ku.edu" in full_url and full_url not in visited:
+#                     get_all_ku_sites_with_depth_priority(full_url, visited, depth + 1, max_depth, all_ku_links)
+
+#         time.sleep(0.1) # To avoid overwhelming the server with requests
+
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error fetching {start_url}: {e}")
+
+#     return list(all_ku_links)
 
 
 
