@@ -4,9 +4,40 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from urllib.parse import urlparse
+
+SKIP_DOMAINS = [
+    "twitter.com", "facebook.com", "instagram.com", "youtube.com",
+    "linkedin.com", "tiktok.com", "snapchat.com", "pinterest.com",
+    "theatlantic.com", "theguardian.com", "nytimes.com", "washingtonpost.com",
+    "bbc.com", "cnn.com", "forbes.com", "businessinsider.com",
+    "huffpost.com", "buzzfeed.com", "reddit.com", "quora.com",
+    "wikipedia.org", "wikihow.com", "fandom.com", "wikia.com",
+    "tumblr.com", "blogger.com", "wordpress.com", "medium.com",
+    "blogspot.com", "livejournal.com", "typepad.com", "weebly.com",
+    "usnews.com", "govtrack.us", "congress.gov", "govinfo.gov",
+    "nasa.gov", "noaa.gov", "cdc.gov", "epa.gov",
+    "fda.gov", "nih.gov", "usda.gov", "usgs.gov",  
+    "loc.gov", "archives.gov", "whitehouse.gov", "justice.gov",
+    "state.gov", "defense.gov", "treasury.gov", "commerce.gov",
+    "labor.gov", "education.gov", "transportation.gov", "energy.gov",
+    "interior.gov", "hud.gov", "va.gov", "dhs.gov",
+    "sba.gov", "nrc.gov", "fcc.gov", "ftc.gov",
+    "sec.gov", "cftc.gov", "fdic.gov", "federalreserve.gov", "studentaid.gov",
+    "irs.gov", "ssa.gov", "cms.gov", "dol.gov",
+    "sba.gov","hhs.gov"
+]
+def is_valid_http_url(url):
+    try: 
+        parsed = urlparse(url)
+        return parsed.scheme in ('http', 'https')  
+    except Exception as e:
+        print(f"Error parsing URL '{url}': {e}")
+        return False
 
 # function that scrapes all the urls from a list of sites KR
 def scrape_urls(all_urls, csv_filename) -> None:
+
     # dictionary to store all the data
     data_dictionary = {'Department': [],
         'Page Title': [], # I added this because H1s are not always descriptive
@@ -14,22 +45,52 @@ def scrape_urls(all_urls, csv_filename) -> None:
         'Text': [],
         'URL': []
         }
+    
+    valid_urls = []
+
     for site in all_urls:
-        scrape_function(site, data_dictionary)
+        if any(domain in site for domain in SKIP_DOMAINS):
+            print(f"[SKIPPED] Skipping government site: {site}")
+            continue
+        if not is_valid_http_url(site):
+            print(f"Invalid URL: {site}")
+            continue
+        try:
+            
+            scrape_function(site, data_dictionary)
+            valid_urls.append(site)
+        except Exception as e:
+            print(f"Skipped invalid URL: {site} due to error: {e}")
+            continue
 
     # create a pandas dataframe to store information
     dataframe = pd.DataFrame(data_dictionary)
     print(dataframe)
 
     dataframe.to_csv(csv_filename)
-    
+
+    # Print the list of valid URLs at the end
+    print("Successfully scraped the following URLs:")
+    for url in valid_urls:
+        print(url)
+
 
 # main function that takes parameter of site to be scrapped
 def scrape_function(site_url, dictionary):
 
-    # use requests library to get HTML contents of the site
-    html_object = requests.get(site_url)
-    html_content = html_object.content
+    try:
+        # use requests library to get HTML contents of the site
+        html_object = requests.get(site_url)
+    
+        # check if the response is HTML before parsing
+        content_type = html_object.headers.get('Content-Type', '')
+        if 'text/html' not in content_type:
+            print(f"[SKIPPED] Non-HTML content at: {site_url} (Content-Type: {content_type})")
+            return
+        html_content = html_object.content
+    except requests.exceptions.RequestException as e:
+        print(f"[ERROR] Failed to fetch {site_url}: {e}")
+        return
 
     # create a BeautifulSoup object which is used to parse through the html
     soup_object = BeautifulSoup(html_content, "html5lib")
@@ -76,6 +137,7 @@ def scrape_function(site_url, dictionary):
     dictionary['h1 Title'].append(cleaned_h1[0])
     dictionary['Text'].append(cleaned_text)
     dictionary['URL'].append(site_url)
+
 
 
 
