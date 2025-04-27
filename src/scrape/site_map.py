@@ -1,3 +1,21 @@
+"""
+site_map.py
+
+This script is designed to scrape websites. 
+It avoids scraping domains listed in the DISALLOWED_DOMAINS list to respect privacy 
+and legal boundaries. The script includes functionality to:
+
+1. Check if a URL is allowed based on the disallowed domains list.
+2. Safely retrieve web pages with retry and exponential backoff mechanisms.
+3. Recursively collect all links from a starting URL up to a specified depth, 
+   while ensuring that disallowed domains are excluded.
+
+Dependencies:
+- requests: For making HTTP requests.
+- BeautifulSoup (from bs4): For parsing HTML content.
+- urllib.parse: For handling URL joining.
+"""
+
 
 import requests
 from bs4 import BeautifulSoup
